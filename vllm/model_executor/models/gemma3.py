@@ -335,9 +335,8 @@ class Gemma3DecoderLayer(nn.Module):
 
         # Add residual connection with clamping for float16
         if hidden_states.dtype == torch.float16:
-            residual = (residual.float() + hidden_states.float()).clamp_(-65504, 65504).half()
-        else:
-            residual = residual + hidden_states
+            hidden_states = (hidden_states.float()).clamp_(-65504, 65504).half()
+            residual = (residual.float()).clamp_(-65504, 65504).half()
 
         hidden_states, residual = self.pre_feedforward_layernorm(
             hidden_states, residual)
@@ -346,9 +345,8 @@ class Gemma3DecoderLayer(nn.Module):
 
         # Add residual connection with clamping for float16
         if hidden_states.dtype == torch.float16:
-            residual = (residual.float() + hidden_states.float()).clamp_(-65504, 65504).half()
-        else:
-            residual = residual + hidden_states
+            hidden_states = (hidden_states.float()).clamp_(-65504, 65504).half()
+            residual = (residual.float()).clamp_(-65504, 65504).half()
         return hidden_states, residual
 
 
